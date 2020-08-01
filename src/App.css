@@ -1,38 +1,86 @@
-.App {
-  text-align: center;
+body {
+	font-size: 14px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 75%;
+	margin: 7rem auto;
+	background-color: #FFFFFF;
+	color: #000;
+	box-sizing: border-box;
+	padding-bottom: 2rem;
+	border: .7rem solid #ccc;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@media only screen and (min-width: 900px) {
+	.Container {
+		width: 25%;
+	}
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#display {
+	box-sizing: border-box;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: flex-end;
+	height: 5rem;
+	margin: .5rem auto;
+	padding: .5rem;
+	font-size: 2.1rem;
+	overflow-y: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+#on {
+	background-color: #AC3939;
+	color: #FFFFFF;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Buttons {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 90%;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.Buttons button {
+	width: 20%;
+	margin: .3rem;
+	padding: .8rem;
+	background-color: #D2D3D5;
+	outline: none;
+	border: none;
+	font-size: 1rem;
+	font-weight: 600;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.Buttons button:hover {
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.Buttons .operator {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+#equals {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 66%;
+	box-sizing: border-box;
+	background-color: #F97C0E;
+	color: #FFFFFF;
 }
