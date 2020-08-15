@@ -6,7 +6,7 @@ const isOperator = /[x/+‑]/,
   endsWithNegativeSign = /[x/+]‑$/;
 
 const Display = (props) => {
-  return <div id="display"> {props.currentValue} </div>;
+  return <div id="display"> {props.current} </div>;
 };
 
 const Buttons = (props) => {
@@ -106,13 +106,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-		 power: true,
-		 current: "0",
-		 prev: "0",
-		 formula: "",
-		 currentSign: "pos",
-		 lastClicked: "",
-		 evaluated: false
+      power: true,
+      current: "0",
+      prev: "0",
+      formula: "",
+      currentSign: "pos",
+      lastClicked: "",
+      evaluated: false
     };
     this.initialize = this.initialize.bind(this);
     this.handleEvaluate = this.handleEvaluate.bind(this);
@@ -121,7 +121,6 @@ class App extends React.Component {
     this.handleDecimal = this.handleDecimal.bind(this);
     this.handlePower = this.handlePower.bind(this);
     this.handleOperator = this.handleOperator.bind(this);
-    this.compute = this.compute.bind(this);
     this.maxDigitsWarning = this.maxDigitsWarning.bind(this);
   }
   
@@ -151,6 +150,9 @@ class App extends React.Component {
   }
 
   handleEvaluate() {
+    console.log('formula', this.state.formula);
+    console.log('current', this.state.current);
+    return;
     if (!this.state.current.includes("Limit")) {
       let expression = this.state.formula;
       while (endsWithOperator.test(expression)) {
@@ -169,21 +171,18 @@ class App extends React.Component {
   }
 
   handleInput(e) {
-    e.preventDefault();
-    if (!this.state.power) return;
-    
-    if(!this.state.current.includes("Limit")){
-      const { current, formula, evaluated} = this.state;
+    if (!this.state.current.includes("Limit")) {
+      const { current, formula, evaluated } = this.state;
       const value = e.target.innerHTML;
       this.setState({ evaluated: false });
-      if(current.length > 21){
-        this.maxDigitsWarning();
-      }else if(evaluated){
+      if (current.length > 21) {
+        this.maxDigitWarning();
+      } else if (evaluated) {
         this.setState({
           current: value,
-          formula: value !== "0" ? value: ""
+          formula: value !== "0" ? value : ""
         });
-      }else{
+      } else {
         this.setState({
           current: current === "0" || isOperator.test(current) ? value : current + value,
           formula: current === "0" && value === "0" ? formula === "" ? value : formula : /([^.0-9]0|^0)$/.test(formula) ? formula.slice(0, -1) + value : formula + value
@@ -193,24 +192,28 @@ class App extends React.Component {
   }
 
   handleDecimal() {
-    if (!this.state.power) return;
-
-    if(this.state.evaluated){
+    if (this.state.evaluated === true) {
       this.setState({
         current: "0.",
         formula: "0.",
         evaluated: false
       });
-    }else if(!this.state.current.includes(".") && !this.state.current.includes("Limit")){
+    } else if (
+      !this.state.current.includes(".") &&
+      !this.state.current.includes("Limit")
+    ) {
       this.setState({ evaluated: false });
-      if(this.state.current.length > 21){
-        this.maxDigitsWarning();
-      }else if(endsWithOperator.test(this.state.formula) || (this.state.current === "0" && this.state.formula === "")){
+      if (this.state.current.length > 21) {
+        this.maxDigitWarning();
+      } else if (
+        endsWithOperator.test(this.state.formula) ||
+        (this.state.current === "0" && this.state.formula === "")
+      ) {
         this.setState({
           current: "0.",
           formula: this.state.formula + "0."
         });
-      } else{
+      } else {
         this.setState({
           current: this.state.formula.match(/(-?\d+\.?\d*)$/)[0] + ".",
           formula: this.state.formula + "."
@@ -220,32 +223,28 @@ class App extends React.Component {
   }
 
   handleOperator(e) {
-    if (!this.state.power) return;
-
-    if(!this.state.current.includes("Limit")){
+    if (!this.state.current.includes("Limit")) {
       const value = e.target.innerHTML;
       const { formula, prev, evaluated } = this.state;
       this.setState({ current: value, evaluated: false });
-      if(evaluated){
+      if (evaluated) {
         this.setState({ formula: prev + value });
-      }else if(!endsWithOperator.test(formula)){
+      } else if (!endsWithOperator.test(formula)) {
         this.setState({
           prev: formula,
           formula: formula + value
         });
-      }else if(!endsWithNegativeSign.test(formula)) {
+      } else if (!endsWithNegativeSign.test(formula)) {
         this.setState({
           formula: (endsWithNegativeSign.test(formula + value) ? formula : prev) + value
         });
-      } else if (value !== "-"){
+      } else if (value !== "‑") {
         this.setState({
           formula: prev + value
         });
       }
     }
   }
-
-  compute() {}
 
   maxDigitsWarning() {
     this.setState({
@@ -258,7 +257,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="Container">
-        <Display currentValue={this.state.current} />{""}
+        <Display current={this.state.current} />{""}
         <Buttons
           numbers={this.handleInput}
           clear={this.handleClear}
